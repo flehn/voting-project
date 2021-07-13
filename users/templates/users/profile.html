@@ -1,0 +1,20 @@
+{% extends 'voting/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>{{user.username}}</h1>
+    <img src="{{ user.profile.image.url }}">
+    <p>{{ user.email }}</p>
+
+     <form method = "POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+          <legend>Profile Info</legend>
+            {{ u_form |crispy }}
+            {{ p_form |crispy }}
+        </fieldset>
+        <div class="submit-btn">
+          <button type="submit">Update</button>
+        </div>
+    </form>
+
+{% endblock content %}
