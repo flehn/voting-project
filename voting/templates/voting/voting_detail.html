@@ -1,0 +1,13 @@
+{% extends 'voting/base.html' %}
+
+{% block content %}
+
+
+        {{ object.title }}
+        Created: {{ object.date_created }}
+        Author: {{ object.author }}
+        Is active?: {{ object.active }}
+        <a href="{% url 'voting-delete' object.id %}">Delete</a>
+        <a href="{% url 'voting-update' object.id %}">Update</a>
+
+{% endblock content%}

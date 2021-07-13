@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tischlerei Dukatz, Kai-Uwe,Dukatz">
-    <meta name="keywords" content="Tischlerei Dukatz, Kai-Uwe,Dukatz">
+    <meta name="description" content="Voty">
+    <meta name="keywords" content="Voty">
     <meta name="author" content="Frederik vom Lehn">
     <link rel="stylesheet" type="text/css "href="{% static 'voting/main.css' %}">
     <meta charset="UTF-8">
@@ -17,8 +17,9 @@
 </head>
 <body>
 <fieldset>
-    <a href="{% url 'voting-home' %}">Home</a>
+    <a href="{% url 'list-of-votings' %}">All Votings</a>
         {% if user.is_authenticated %}
+            <a href="{% url 'list-of-votings-userrestricted' %}">My Votings</a>
             <a href="{% url 'logout' %}">Logout</a>
             <a href="{% url 'profile' %}">Profile</a>
             {% if user.is_superuser %}

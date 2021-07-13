@@ -1,0 +1,14 @@
+{% extends 'voting/base.html' %}
+
+{% block content %}
+
+    {% for element in voting %}
+        <a href="{% url 'voting-detail' element.id %}">{{ element.title }}</a>
+        Created: {{ element.date_created }}
+        Author: {{ element.author }}
+        Is active?: {{ element.active }}
+    {% endfor %}
+
+<a href="{% url 'voting-create' %}">Create new Voting</a>
+
+{% endblock content%}
