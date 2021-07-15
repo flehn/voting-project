@@ -1,0 +1,18 @@
+{% extends 'voting/base.html' %}
+{% block content %}
+  <div class="content">
+    <form method = "POST" >
+        {% csrf_token %}
+        <fieldset>
+          <legend>Delete this Voting</legend>
+        </fieldset>
+        <div class="submit-btn">
+          <h2>Are you sure?</h2>
+          <button type="submit">Yes, Delete</button>
+          <a href="{% url 'voting-detail' object.voting.id %}">No, cancel</a>
+        </div>
+    </form>
+
+  </div>
+
+{% endblock content %}

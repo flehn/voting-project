@@ -1,5 +1,5 @@
 {% extends 'voting/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 
@@ -7,7 +7,15 @@
         Created: {{ object.date_created }}
         Author: {{ object.author }}
         Is active?: {{ object.active }}
+        number of votes: {{ object.number_of_votes }}
         <a href="{% url 'voting-delete' object.id %}">Delete</a>
         <a href="{% url 'voting-update' object.id %}">Update</a>
+        <a href="{% url 'add-elements' object.id %}">Add Elements</a>
+
+        {% for element in elements %}
+        <a href="{% url 'element-detail' object.id element.id %}">{{ element.title }}</a>
+        <a href="{% url 'delete-element' object.id element.id %}"><i class="far fa-trash-alt"></i></a>
+        {% endfor %}
+
 
 {% endblock content%}

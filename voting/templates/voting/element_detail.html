@@ -1,0 +1,12 @@
+{% extends 'voting/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+        {{ object.title }}
+        ID: {{ object.id }}
+        number of likes: {{ object.likes }}
+
+
+
+{% endblock content%}

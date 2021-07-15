@@ -1,0 +1,39 @@
+{% extends "voting/base.html" %}
+{% block content %}
+
+
+
+              <!--Content 1 vs 1 View -->
+
+                  <div class="voting">
+                      <!--Card 1 -->
+                       <div class="card" style="width: 18rem; cursor: pointer;">
+                            <div style="height: 250px">
+
+                            </div>
+                            <div class="card-body">
+                                <p class="card-title">{{ two_elements.0.title }}</p>
+                            </div>
+                       </div>
+
+                  <!--Card 1 -->
+                        <div class="card" style="width: 18rem; cursor: pointer;">
+                            <div style="height: 250px">
+                            </div>
+                            <div class="card-body">
+                                <p class="card-title">{{ two_elements.1.title }} </p>
+                            </div>
+                        </div>
+                  </div>
+
+
+        <div class="container-home">
+            {% if messages %}
+                {% for message in messages %}
+                    <span class="badge rounded-pill bg-primary"> {{ message }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+
+{% endblock content %}

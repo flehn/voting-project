@@ -10,6 +10,7 @@ class Voting(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     # one-many | one User can have multiple Votings
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    number_of_votes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
