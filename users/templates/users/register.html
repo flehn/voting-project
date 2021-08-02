@@ -1,20 +1,67 @@
-{% extends 'voting/base.html' %}
-{% load crispy_forms_tags %}
+{% extends "voting/base.html" %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'users/login-register.css' %}">
+{% endblock %}
 {% block content %}
   <div class="content">
-    <form method = "POST" action="">
-        {% csrf_token %}
-        <fieldset>
-          <legend>Join today</legend>
-          {{ form |crispy }}
-        </fieldset>
-        <div class="submit-btn">
-          <button type="submit">Sign up</button>
-        </div>
-    </form>
-    <div >
-      <small>Already have an Account? <a href="{% url 'login' %}">Sign in</a></small>
-    </div>
+
+      <div class="login-content flex">
+          <div class="login-image">
+              <img src="https://images.pexels.com/photos/1054974/pexels-photo-1054974.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="">
+          </div>
+
+          <div class="form-background">
+              <h1>Join today</h1>
+              <div class="form-elements">
+                  <form method = "POST">
+                    {% csrf_token %}
+                      {{ form.non_field_errors }}
+                      <table>
+                            <tr>
+                                <div class="fieldWrapper">
+                                    <th><label for="{{ form.username.id_for_label }}">Username:</label></th>
+                                    <td>{{ form.username }}</td>
+                                </div>
+                            </tr>
+                            {{ form.username.errors }}
+                            <tr>
+                                <div class="fieldWrapper">
+                                    <th><label for="{{ form.email.id_for_label }}">Email:</label></th>
+                                    <td>{{ form.email }}</td>
+                                </div>
+                            </tr>
+                            {{ form.email.errors }}
+                            <tr>
+                                <div class="fieldWrapper">
+                                    <th><label for="{{ form.password1.id_for_label }}">Your password:</label></th>
+                                    <td>{{ form.password1 }}</td>
+                                </div>
+                            </tr>
+                            {{ form.password1.errors }}
+                            <tr>
+                                <div class="fieldWrapper">
+                                    <th><label for="{{ form.password2.id_for_label }}">Confirm password:</label></th>
+                                    <td>{{ form.password2 }}</td>
+                                </div>
+                            </tr>
+                            {{ form.password2.errors }}
+
+                      </table>
+                    <div class="submit-btn">
+                      <button type="submit">Sign up</button>
+                    </div>
+                  </form>
+              </div>
+              <div class="submenu">
+                <small>Already have an Account? <a href="{% url 'login' %}">Sign in</a></small>
+              </div>
+
+          </div>
+
+
+     </div>
+
   </div>
 
 {% endblock content %}

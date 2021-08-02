@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import F, Count
 from .models import Voting, Element
 from .forms import CreateElementForm
 from random import sample
+from django.contrib import messages
 from django.views.generic import (
     ListView,
     DetailView,
@@ -30,22 +32,51 @@ class VotingListView(ListView):
     model = Voting
     template_name = 'voting/list-of-votings.html'
     context_object_name = 'voting'
-    ordering = ['date_created']
+    ordering = ['-date_created']
 
     def get_queryset(self):
-        queryset = Voting.objects.filter(active=True)
+        queryset = Voting.objects.filter(active=True, private=False)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['votingelements'] = Voting.objects.filter(private=False, active=True).annotate(num__element=Count('related_votings'))
+        return context
+
+
+
 
 
 class VotingListViewUserRestricted(LoginRequiredMixin, ListView):
     model = Voting
-    template_name = 'voting/list-of-votings.html'
+    template_name = 'voting/list-of-votings-userrestricted.html'
     context_object_name = 'voting'
     ordering = ['date_created']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_votings'] = Voting.objects.filter(author=self.request.user, active=True).annotate(num__element=Count('related_votings'))
+        context['deactive_votings'] = Voting.objects.filter(author=self.request.user, active=False).annotate(num__element=Count('related_votings'))
+        #context['anzahlelemente'] = Voting.objects.filter(author=self.request.user).annotate('related_votings')
+        return context
 
     def get_queryset(self):
         queryset = Voting.objects.filter(author=self.request.user)
         return queryset
+
+
+    """""
+    In Case that the corresponding Elements of the different votings should be displayed as well
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        votings = Voting.objects.filter(author=self.request.user)
+        for element in votings:
+            # related_votings is a related_name parameter in the ForeignKey definition of the ElementModel
+            context[element.id] = element.related_votings.all()
+        return context
+    """
+
 
 
 # ELEMENT & VOTING
@@ -64,6 +95,7 @@ class VotingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['elements'] = Element.objects.filter(voting_id=self.kwargs['pk'])
+        context['ordered_elements'] = Element.objects.filter(voting_id=self.kwargs['pk']).order_by('-likes')[:3]
         return context
 
 
@@ -193,10 +225,47 @@ def createelement(request, pk):
 
 
 # ACTIVE VOTING
+def activate(request, pk):
+    voting = get_object_or_404(Voting, pk=pk)
+    element = Element.objects.filter(voting_id=pk)
+    if len(element) > 1:
+        voting.active ^= True
+        voting.save()
+    else:
+        messages.warning(request, f'You cannot activate a Voting with less than two Items. Please add Items.')
+    return redirect('list-of-votings-userrestricted')
+
+
+def private(request, pk):
+    voting = get_object_or_404(Voting, pk=pk)
+    voting.private ^= True
+    voting.save()
+    return redirect('voting-detail', pk)
+
+""""
+def vote_view(request, pk):
+    vote = get_object_or_404(Voting_Element, pk=pk)
+    name = Voting_Element.objects.get(pk=pk)
+    vote.number_votes += 1
+    vote.save()
+    messages.success(request, f'Voted for {name.title}')
+    return redirect('voting_page')
+"""
+
 
 # ELEMENT
-class ActiveVoting(TemplateView):
+class ActiveVoting(DetailView):
     template_name = "voting/active-voting.html"
+
+    def get_queryset(self):
+        queryset = Voting.objects.filter(id=self.kwargs['pk'])
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        # This updates the number of votes, each time the page is requested
+        Voting.objects.filter(id=self.kwargs['pk']).update(number_of_votes=F('number_of_votes') + 1)
+
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -214,6 +283,12 @@ class ActiveVoting(TemplateView):
         return two_elements
 
 
+def vote_view(request, pk, pk_element):
+    element = get_object_or_404(Element, pk=pk_element)
+    element.likes += 1
+    element.save()
+    messages.success(request, f'Voted for {element.title}')
+    return redirect('voting-active', pk)
 """"
     def get(self, request, *args, **kwargs):
         self.get_random_element()
@@ -229,3 +304,17 @@ class ActiveVoting(TemplateView):
         return render(request, self.template_name, {'form': form})
 
 """
+
+class RankElementsListview(ListView):
+    model = Element
+    template_name = 'voting/voting-results.html'
+    ordering = ['-likes']
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the corresponding elements
+        context['elements'] = Element.objects.filter(voting_id=self.kwargs['pk']).order_by('-likes')
+        # Add in a the current Voting in order to display Voting Name
+        context['voting'] = Voting.objects.filter(id=self.kwargs['pk'])
+        return context

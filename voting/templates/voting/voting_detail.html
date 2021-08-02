@@ -1,21 +1,133 @@
 {% extends 'voting/base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'voting/userrestricted-voting-detail.css' %}">
+        <link rel="stylesheet" type="text/css "href="{% static 'voting/active-voting.css' %}">
+{% endblock %}
 {% block content %}
 
+<div class="menu2 flex">
+    <a class="btn-blue " href="{% url 'list-of-votings-userrestricted' %}"><i class="far fa-arrow-alt-circle-left"></i> overview</a>
+    <p>Your can now edit your voting: {{object.title}} </p>
+</div>
 
-        {{ object.title }}
-        Created: {{ object.date_created }}
-        Author: {{ object.author }}
-        Is active?: {{ object.active }}
-        number of votes: {{ object.number_of_votes }}
-        <a href="{% url 'voting-delete' object.id %}">Delete</a>
-        <a href="{% url 'voting-update' object.id %}">Update</a>
-        <a href="{% url 'add-elements' object.id %}">Add Elements</a>
+<div class="flex">
+        <div>
+            <p>Menu</p>
+            <div class="menu-panel" id="menu-panel">
+                <div class="avatar flex">
+                        <p>{{user.username}}</p>
+                        <img src="{{ user.profile.image.url }}" alt="{{ element.author }}" />
+                </div>
+                <p><a class="link" href="{% url 'profile' %}">Profile</a></p>
+                <p><a class="link" href="{% url 'list-of-votings-userrestricted' %}">My Votings</a></p>
+               <p><a class="link" href="{% url 'logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a></p>
+            </div>
+        </div>
 
-        {% for element in elements %}
-        <a href="{% url 'element-detail' object.id element.id %}">{{ element.title }}</a>
-        <a href="{% url 'delete-element' object.id element.id %}"><i class="far fa-trash-alt"></i></a>
-        {% endfor %}
+        <div>
+            <p>Your Voting:</p>
+            <div class="menu-header voting-card">
+                <h1>{{ object.title }}</h1>
+                <p>Created: {{ object.date_created }}</p>
+                <div class="flex margin-top-bot">
+
+                            {% if object.private %}
+                            <div class="tag tag-orange">
+                                <a href="{% url 'private' object.id %}">Private <i class="fas fa-edit"></i></a>
+                            </div>
+                            {% else %}
+                            <div class="tag tag-green">
+                                <a href="{% url 'private' object.id %}">Public <i class="fas fa-edit"></i></a>
+                            </div>
+                            {% endif %}
+
+                            {% if object.active %}
+                            <div class="tag tag-green">
+                                <a href="{% url 'activate' object.id %}">Active <i class="fas fa-edit"></i></a>
+                            </div>
+                            {% else %}
+                            <div class="tag tag-orange">
+                                <a href="{% url 'activate' object.id %}">Deactivated <i class="fas fa-edit"></i></a>
+                            </div>
+                            {% endif %}
+
+                            <div class="tag tag-blue"><span><i class="fas fa-eye"></i>  {{object.number_of_votes}}</span></div>
+                        </div>
+                <a href="{% url 'voting-update' object.id %}">Change Name</a>
+            </div>
+
+            <div class="voting-card">
+                <p>Share Voting:</p>
+                <div class="flex align-items-center">
+                    <div class="share-url">
+                        <small>www.voty.com{% url 'voting-active' object.id %}</small>
+                    </div>
+                    <a href="{% url 'voting-active' object.id %}" style="margin-left: 10px; font-size: 24px;"> <i class="fas fa-arrow-alt-circle-right"></i></a>
+
+                </div>
+            </div>
+
+            <div class="voting-card" id="delete-btn">
+                <a href="{% url 'voting-delete' object.id %}">Delete Voting</a>
+            </div>
+        </div>
+
+        <div>
+        <p>Items:</p>
+            <div class="voting-card">
+                <a class="create-btn" href="{% url 'add-elements' object.id %}">Add Elements</a>
+                {% for element in elements %}
+                <div class="flex">
+                    <div class="element">
+                        <a href="{% url 'element-detail' object.id element.id %}">{{ element.title }}</a>
+                    </div>
+                    <div class="element-delete">
+                        <a href="{% url 'delete-element' object.id element.id %}"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+    {% if object.active %}
+        <div>
+            <p>Current Ranking:</p>
+            <div style="margin-left: 10px;" ">
+                <div class="voting-card">
+                <p>Share official results:</p>
+                <div class="flex align-items-center">
+                    <div class="share-url">
+                        <small>www.voty.com{% url 'voting-results' object.id %}</small>
+                    </div>
+                    <a href="{% url 'voting-results' object.id %}" style="margin-left: 10px; font-size: 24px;"> <i class="fas fa-arrow-alt-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="results">
+                    <p>Current top three Items based on votes</p>
+                    {% for element in ordered_elements  %}
+                    <li>
+                       <div class="flex align-items-center">
+                           <p>{{ forloop.counter }}</p>
+                           <p>{{element.title}}</p>
+                       </div>
+                       <div>
+                           <p>
+                               <div class="number-of-votes flex">
+                                   {{element.likes}}
+                               </div>
+                           </p>
+                       </div>
+                   </li>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
 
 
 {% endblock content%}

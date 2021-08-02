@@ -1,0 +1,143 @@
+{% extends 'voting/base.html' %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'voting/userrestricted-voting-detail.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="menu2">
+    <div style="margin: 2em;">
+            {% if messages %}
+                {% for message in messages %}
+                    <span style="color: red;"> {{ message }}</span>
+                {% endfor %}
+            {% endif %}
+    </div>
+</div>
+
+<div class="flex">
+    <div>
+        <p>Menu</p>
+        <div class="menu-panel" id="menu-panel">
+            <div class="avatar flex">
+                    <p>{{user.username}}</p>
+                    <img src="{{ user.profile.image.url }}" alt="{{ element.author }}" />
+            </div>
+            <p><a class="link" href="{% url 'profile' %}">Profile</a></p>
+            <p><a class="link" href="{% url 'list-of-votings-userrestricted' %}">My Votings</a></p>
+            <p><a class="link" href="{% url 'logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a></p>
+        </div>
+
+
+        <a class="create-btn" href="{% url 'voting-create' %}">Create new Voting</a>
+
+    </div>
+
+    {% if deactive_votings %}
+    <div class="list-of-votings">
+        <p>Inactive votings</p>
+        <div class="">
+        {% for element in deactive_votings %}
+            <div class="card-content">
+                <div class="card" onclick="location.href='{% url 'voting-detail' element.id %}'" style="cursor:pointer;">
+                    <!--
+                      <div class="card-header">
+                      <img src="https://c0.wallpaperflare.com/preview/483/210/436/car-green-4x4-jeep.jpg" alt="rover" />
+                    </div>
+                    -->
+                    <div class="card-body">
+                        <h2>{{ element.title }}</h2>
+                        <div class=" flex margin-top-bot">
+                            {% if element.private %}
+                            <div class="tag tag-orange"> Private </div>
+                            {% else %}
+                            <div class="tag tag-green"> Public </div>
+                            {% endif %}
+                            <div class="tag tag-blue"><span><i class="fas fa-eye"></i>  {{element.number_of_votes}}</span></div>
+                            <div class="tag">Deactivated</div>
+                        </div>
+
+                        <div class="">
+                            <p>Voting Item: {{element.num__element}}</p>
+                        </div>
+
+
+                        <!-- {% url 'voting-detail' element.id %} -->
+                      <div class="user">
+                        <img src="{{ element.author.profile.image.url }}" alt="{{ element.author }}" />
+                        <div class="user-info">
+                          <h5>Created by {{ element.author }}</h5>
+                          <small>on {{ element.date_created|date:"d F, Y" }}</small>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="card-voting-menu">
+                  <small><a href="{% url 'voting-detail' element.id %}">Edit</a></small>
+                  <small><a href="{% url 'activate' element.id %}">Activate</a></small>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if active_votings %}
+
+    <div style="margin-left: 50px;">
+    <p>Your active votings</p>
+        <div class="active-votings">
+        {% for element in active_votings %}
+            <div class="card-content">
+                <div class="card" onclick="location.href='{% url 'voting-detail' element.id %}'" style="cursor:pointer;">
+                    <!--
+                      <div class="card-header">
+                      <img src="https://c0.wallpaperflare.com/preview/483/210/436/car-green-4x4-jeep.jpg" alt="rover" />
+                    </div>
+                    -->
+                    <div class="card-body">
+                        <h2>{{ element.title }}</h2>
+                        <div class=" flex margin-top-bot">
+                            {% if element.private %}
+                            <div class="tag tag-orange"> Private </div>
+                            {% else %}
+                            <div class="tag tag-green"> Public </div>
+                            {% endif %}
+                            <div class="tag tag-blue"><span><i class="fas fa-eye"></i>  {{element.number_of_votes}}</span></div>
+                            <div class="tag tag-green blink_me">active</div>
+                        </div>
+                        <div class="">
+                            <p>Voting Items: {{element.num__element}}</p>
+                        </div>
+                        <!-- {% url 'voting-detail' element.id %} -->
+                      <div class="user">
+                        <img src="{{ element.author.profile.image.url }}" alt="{{ element.author }}" />
+                        <div class="user-info">
+                          <h5>Created by {{ element.author }}</h5>
+                          <small>on {{ element.date_created|date:"d F, Y" }}</small>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="card-voting-menu">
+                          <small><a href="{% url 'activate' element.id %}">Deactivate</a></small>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content%}

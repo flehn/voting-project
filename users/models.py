@@ -13,8 +13,8 @@ class Profile(models.Model):
 
 
     # Wir überschreiben hier die Save Method, damit die Profilbilder mit einer max Größe von 300x300 gespeichert werden.
-    def save(self):
-        super().save()
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
 
         img = Image.open(self.image.path)
 

@@ -1,19 +1,46 @@
-{% extends 'voting/base.html' %}
+{% extends "voting/base.html" %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'users/login-register.css' %}">
+{% endblock %}
 {% block content %}
   <div class="content">
-    <form method = "POST">
-        {% csrf_token %}
-        <fieldset>
-          <legend>Login</legend>
-          {{ form }}
-        </fieldset>
-        <div class="submit-btn">
-          <button type="submit">Login</button>
-        </div>
-    </form>
-    <div >
-      <small>Don't have an Account? <a href="{% url 'register'%}">Sign up</a></small>
-    </div>
+
+      <div class="login-content flex">
+          <div class="login-image">
+              <img src="https://images.pexels.com/photos/1054974/pexels-photo-1054974.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="">
+          </div>
+
+          <div class="form-background">
+              <div>
+                  <h1>Login</h1>
+                  <div style="margin: 2em;">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <span style="color: green;"> {{ message }}</span>
+                        {% endfor %}
+                    {% endif %}
+                  </div>
+                  <form method = "POST">
+                    {% csrf_token %}
+
+                      <table>
+                        {{ form.as_table}}
+                      </table>
+                    <div class="submit-btn">
+                      <button type="submit">Login</button>
+                    </div>
+                  </form>
+
+                  <div class="submenu">
+                    <small>Don't have an Account? <a href="{% url 'register'%}">Sign up</a></small>
+                  </div>
+              </div>
+          </div>
+
+
+     </div>
+
   </div>
 
 {% endblock content %}

@@ -1,18 +1,29 @@
-{% extends 'voting/base.html' %}
-{% load crispy_forms_tags %}
+{% extends "voting/base.html" %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'voting/create-voting.css' %}">
+{% endblock %}
 {% block content %}
-  <div class="content">
-    <form method = "POST" >
-        {% csrf_token %}
-        <fieldset>
-          <legend>Create new Voting</legend>
-          {{ form |crispy }}
-        </fieldset>
-        <div class="submit-btn">
-          <button type="submit">Create new Voting</button>
-        </div>
-    </form>
 
-  </div>
+      <div class="create-voting-content">
+
+        <h1>Create new Voting</h1>
+        <form method = "POST" >
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+             <div class="fieldWrapper flex">
+                <label style="margin-right: 10px;" for="{{ form.title.id_for_label }}">Title:</label>
+                {{ form.title }}
+                <div class="submit-btn" style="margin-left: 10px;">
+                    <button type="submit">Safe</button>
+                </div>
+            </div>
+            {{ form.title.errors }}
+
+
+        </form>
+    </div>
+
 
 {% endblock content %}

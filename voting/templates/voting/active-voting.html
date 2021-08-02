@@ -1,39 +1,63 @@
 {% extends "voting/base.html" %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'voting/active-voting.css' %}">
+{% endblock %}
 {% block content %}
 
+    <div class="tag tag-orange" style="width: 150px;"><small class="blink_me">Voting is running</small></div>
 
+    <div class="active-voting-info flex align-items-center">
+        <p>This {% if object.private %} <strong>private</strong> {% else %} <strong>public</strong>{% endif %} voting was created by {{ object.author }} at {{ object.date_created }}</p>
 
-              <!--Content 1 vs 1 View -->
-
-                  <div class="voting">
-                      <!--Card 1 -->
-                       <div class="card" style="width: 18rem; cursor: pointer;">
-                            <div style="height: 250px">
-
-                            </div>
-                            <div class="card-body">
-                                <p class="card-title">{{ two_elements.0.title }}</p>
-                            </div>
-                       </div>
-
-                  <!--Card 1 -->
-                        <div class="card" style="width: 18rem; cursor: pointer;">
-                            <div style="height: 250px">
-                            </div>
-                            <div class="card-body">
-                                <p class="card-title">{{ two_elements.1.title }} </p>
-                            </div>
-                        </div>
-                  </div>
-
-
-        <div class="container-home">
+        <div class="message-content">
             {% if messages %}
                 {% for message in messages %}
-                    <span class="badge rounded-pill bg-primary"> {{ message }}</span>
+                    <span class="message-text"> {{ message }}</span>
                 {% endfor %}
             {% endif %}
         </div>
+        <a  class="btn-blue " href="{% url 'voting-results' object.id%}">Ranking</a>
+    </div>
+
+
+
+  <!--Content 1 vs 1 View -->
+
+      <div class="flex sammel active-voting-field">
+          <!--Card 1 -->
+           <div class="active-voting-card" onclick="location.href='{% url 'like-element' pk=object.id pk_element=two_elements.0.id %}'">
+                <div class="card-header">
+                    <img src="{{ two_elements.0.link }}" alt="">
+                </div>
+                <div class="card-body">
+                    <p class="card-title">{{ two_elements.0.title }}</p>
+                </div>
+           </div>
+          <!--VS -->
+
+          <div class="vs flex align-items-center">
+              <h1>vs</h1>
+          </div>
+
+          <!--Card 2 -->
+          <div class="active-voting-card" onclick="location.href='{% url 'like-element' pk=object.id pk_element=two_elements.1.id %}'">
+                 <div class="card-header">
+                    <img src="{{ two_elements.1.link }}" alt="">
+                </div>
+                <div class="card-body">
+                    <p class="card-title">{{ two_elements.1.title }}</p>
+                </div>
+           </div>
+      </div>
+
+
+
+
+
+
+
+
 
 
 {% endblock content %}

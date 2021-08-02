@@ -1,0 +1,15 @@
+
+
+.list-of-votings {
+    background-color: white;
+    padding: 2em;
+}
+
+.list-of-votings .card {
+    margin-bottom: 20px;
+}
+
+
+.card:hover {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}

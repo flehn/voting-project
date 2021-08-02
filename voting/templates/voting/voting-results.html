@@ -1,0 +1,59 @@
+{% extends "voting/base.html" %}
+{% load static %}
+{% block extrahead %}
+        <link rel="stylesheet" type="text/css "href="{% static 'voting/active-voting.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="active-voting-info">
+        <h1>{{voting.0.title}}</h1>
+        <p>This voting was created by {{ voting.0.author }} at {{ voting.0.date_created }}</p>
+    </div>
+
+    <div class="active-voting-info flex space-between">
+        {% if voting.0.active %}
+        <p> <i class="fas fa-exclamation-triangle"></i> Voting is still running</p>
+        <a class="btn-blue " href="{% url 'voting-active' voting.0.id %}">Vote</a>
+
+        {% else %}
+         <p><i class="fas fa-check-circle"></i>  The vote is over</p>
+        {% endif %}
+    </div>
+
+
+    <div class="results active-voting-info">
+        <li>
+            <p>Name</p>
+            <p>Total number of votes</p>
+        </li>
+        {% for element in elements  %}
+               <li>
+                   <div class="flex align-items-center">
+                       <p>{{ forloop.counter }}</p>
+                       <p>{{element.title}}</p>
+                   </div>
+                   <div>
+                       <p>
+                           <div class="number-of-votes flex">
+                               {{element.likes}}
+                           </div>
+                       </p>
+                   </div>
+               </li>
+        {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

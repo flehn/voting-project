@@ -7,6 +7,6 @@ class CreateElementForm(forms.ModelForm):
 
     class Meta:
         model = Element
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'link']
 
 

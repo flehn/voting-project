@@ -1,0 +1,68 @@
+
+
+.active-votings {
+    padding: 2em;
+    border: 1px dotted grey;
+}
+
+
+.menu-panel {
+    padding: 10px 10px 10px 30px;
+    margin: 0px 30px 10px 0px;
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 170px;
+
+}
+
+#menu-panel {
+    background-color: white;
+}
+
+
+#add-btn {
+    background-color: #1d018c;
+}
+
+#add-btn a {
+    color: var(--veryLightGray);
+    text-decoration: none;
+}
+
+#delete-btn {
+    background-color: #e35f5f;
+}
+#delete-btn a {
+    color: white;
+    text-decoration: none;
+}
+.voting-card {
+
+    margin: 10px;
+    padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.element {
+    margin-top: 10px;
+    border-bottom: 1px solid grey;
+    padding-bottom: 5px;
+    min-width: 200px;
+}
+
+.element a {
+    text-decoration: none;
+}
+
+.element-delete {
+    margin-top: 10px;
+}
+
+.share-url {
+    background-color: var(--veryLightGray);
+    padding: 10px;
+    border-left: solid 1px red;
+}

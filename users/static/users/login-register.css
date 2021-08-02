@@ -1,0 +1,61 @@
+
+
+.login-content {
+    margin: 3em;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 80%;
+    height: 30em;
+}
+
+.login-image img {
+    height: 100%;
+    object-fit: cover;
+    max-width: 450px;
+}
+
+.form-background {
+    padding: 2em;
+    width: 80%;
+}
+
+.form-elements {
+    margin-top: 2em;
+    height: 70%;
+}
+.fieldWrapper  {
+}
+
+.fieldWrapper ul {
+    list-style-type: none;
+    color: #e35f5f;
+    font-size: 12px;
+    padding: 0;
+}
+.submenu {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+}
+td input{
+    width: 100%;
+}
+
+th  {
+    font-weight: normal;
+    text-align: left;
+}
+
+
+.submit-btn button {
+    margin-top: 2em;
+    height: 2em;
+    width: 100%;
+    cursor: pointer;
+
+
+}
