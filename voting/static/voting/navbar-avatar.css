@@ -79,3 +79,11 @@ width: 100%;}
   margin-right: 10px;
   margin-left: 10px;
 }
+
+@media screen and (max-width: 510px) {
+
+   .navbar2 {
+       display: none;
+   }
+
+}

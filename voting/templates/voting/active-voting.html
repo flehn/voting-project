@@ -7,7 +7,7 @@
 
     <div class="tag tag-orange" style="width: 150px;"><small class="blink_me">Voting is running</small></div>
 
-    <div class="active-voting-info flex align-items-center">
+    <div class="active-voting-info">
         <p>This {% if object.private %} <strong>private</strong> {% else %} <strong>public</strong>{% endif %} voting was created by {{ object.author }} at {{ object.date_created }}</p>
 
         <div class="message-content">
@@ -24,7 +24,7 @@
 
   <!--Content 1 vs 1 View -->
 
-      <div class="flex sammel active-voting-field">
+      <div class="active-voting-field">
           <!--Card 1 -->
            <div class="active-voting-card" onclick="location.href='{% url 'like-element' pk=object.id pk_element=two_elements.0.id %}'">
                 <div class="card-header">

@@ -4,6 +4,7 @@
     width: 400px;
 }
 .active-voting-info {
+    display: flex;
     margin: 3em;
     padding: 1em;
     background-color: whitesmoke;
@@ -11,8 +12,13 @@
 .active-voting-field {
     margin: auto;
     align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 .active-voting-card {
+
+    flex: 0 1 calc(45% - 1em);
     width: 18rem;
     height: 20em;
     cursor: pointer;
@@ -37,6 +43,8 @@
 .vs h1 {
    margin: 0px;
 }
+
+
 
 .results {
     padding: 2em;
@@ -67,3 +75,18 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
 }
 
+@media screen and (max-width: 550px) {
+
+    .active-voting-info {
+        flex-direction: column;
+    }
+
+    .active-voting-field {
+    height: 90vh;
+    }
+
+    .active-voting-card {
+    flex: 0 1 100%;
+        height: 44%;
+  }
+}
