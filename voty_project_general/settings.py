@@ -125,6 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Hier ändern wir den Ordner in dem Django profile Pics speichern soll
 # Dieser Befehel erstellt den Ordner media
